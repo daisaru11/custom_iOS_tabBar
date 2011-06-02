@@ -2,7 +2,7 @@
 Titanium.UI.setBackgroundColor('#000');
 
 // include the new class
-Ti.include("/tabbar/customTabBar.js");
+Ti.include("/tabbar_module/customTabBar.js");
 
 // create tab group
 var tabGroup = createCustomTabGroup();
