@@ -1,6 +1,9 @@
 Custom Tab Bar
 ==============
 
+TODO:
+- Add support for orientation change
+
 Easily extend tabbar in Appcelerator Titanium mobile for iPhone app to allow any image to be used!
 
 This class is everything short of just being able to drop it in and be done.
