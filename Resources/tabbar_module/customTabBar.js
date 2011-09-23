@@ -37,7 +37,7 @@ var createCustomTabGroup = function(settings) {
 				bottom:0,
 				index: tabbar.tabs.length - 1,
 				height:49,
-				width: tabbar.tabs[ tabbar.tabs.length - 1 ].imageWidth,
+				width: tabbar.tabs[ tabbar.tabs.length - 1 ].imageWidth || 'auto',
 				touchEnabled: false,
 				preventDefaultImage: true
 			});
@@ -178,23 +178,21 @@ var createCustomTabGroup = function(settings) {
 
 					fakeTabs[i].height = tabbar.tabs[ fakeTabs[i].index ].imageHeight > 49 ? tabbar.tabs[ fakeTabs[i].index ].imageHeight : 49;
 
-					if(tabbar.tabs[ fakeTabBgs[i].index ].imageWidth !== undefined && tabbar.tabs[ fakeTabBgs[i].index ].imageWidth > width) {
-
+					if(tabbar.tabs[ fakeTabBgs[i].index ].imageWidth !== undefined && tabbar.tabs[ fakeTabBgs[i].index ].imageWidth >= width) {
                         offset = (tabbar.tabs[ fakeTabBgs[i].index ].imageWidth - width) / 2;
                         
                         fakeTabs[i].width = tabbar.tabs[ fakeTabBgs[i].index ].imageWidth;
                         fakeTabs[i].left = left - offset;
+                        
+                        tabbar.add(fakeTabs[i]);
+                        
+                        tabbar.tabs[i].icon = null;
 						
 					} else {
-					    
-						image_offset = (fakeTabs[i].width - width) / 4;
-
-						fakeTabs[i].left = left - image_offset;
+						fakeTabBgs[i].add(fakeTabs[i]);
+						tabbar.tabs[i].icon = null;
 
 					}
-					
-					tabbar.tabs[i].icon = null;
-					tabbar.add(fakeTabs[i]);
 
 				}
 			}

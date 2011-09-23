@@ -39,7 +39,8 @@ var win3 = Titanium.UI.createWindow({
     backgroundColor:'#fff'
 });
 var tab3 = Titanium.UI.createTab({  
-    icon:'KS_nav_views.png',
+    icon:'new.png',
+    custom:true,
     title:'Tab 3',
     window:win3
 });
@@ -79,10 +80,8 @@ var tab2 = Titanium.UI.createTab({
 });
 
 var tab4 = Titanium.UI.createTab({  
-    icon:'new.png',
-    imageHeight:60,
-    imageWidth:80,
-    custom:true,
+    icon:'KS_nav_views.png',
+    //modal: true,
     window:win2
 });
 
@@ -126,8 +125,6 @@ win2.add(label2);
 tabGroup.addTab(tab1);
 tabGroup.addTab(tab2);
 tabGroup.addTab(tab3);  
-tabGroup.addTab(tab4); 
-tabGroup.addTab(tab5);  
 //tabGroup.addTab(tab6);  
 //tabGroup.addTab(tab7);  
 
