@@ -72,15 +72,17 @@ var win2 = Titanium.UI.createWindow({
 var tab2 = Titanium.UI.createTab({  
     icon:'new.png',
     imageHeight:60,
-    imageWidth:190,
+    imageWidth:80,
     custom:true,
     //modal: true,
     window:win2
 });
 
 var tab4 = Titanium.UI.createTab({  
-    icon:'KS_nav_views.png',
-    //modal: true,
+    icon:'new.png',
+    imageHeight:60,
+    imageWidth:80,
+    custom:true,
     window:win2
 });
 

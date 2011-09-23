@@ -28,9 +28,7 @@ var createCustomTabGroup = function(settings) {
 				height: 49,
 				index: tabbar.tabs.length - 1,
 				bottom:0,
-				//backgroundImage:'/tabbar_module/images/tabbar.png',
-				backgroundColor:'blue',
-				//opacity: 0.3,
+				backgroundImage:'/tabbar_module/images/tabbar.png',
 				borderRadius:8
 			});
 
@@ -38,7 +36,8 @@ var createCustomTabGroup = function(settings) {
 				image: tabbar.tabs[ tabbar.tabs.length - 1 ].icon,
 				bottom:0,
 				index: tabbar.tabs.length - 1,
-				width:'auto',
+				height:49,
+				width: tabbar.tabs[ tabbar.tabs.length - 1 ].imageWidth,
 				touchEnabled: false,
 				preventDefaultImage: true
 			});
@@ -89,7 +88,7 @@ var createCustomTabGroup = function(settings) {
 			 * We add the tab images seperate if they are larger then the normal tab space allows
 			 * however this CAN hit the limit of items that can be added to a tabgroup bar (5 items)
 			 */
-            if(object.tabHeight !== undefined) {
+            if(object.custom !== undefined || object.custom === true) {
                 fakeTabs.push(tabImage);
 
                 if(object.tabHeight > tallest_tab) {
@@ -115,18 +114,6 @@ var createCustomTabGroup = function(settings) {
 	}
 
 	function open() {
-	                        
-                    Ti.API.info((2 - 1) * 26);
-                    Ti.API.info((3 - 1) * 16);
-                    Ti.API.info((4 - 1) * 10.5);
-                    Ti.API.info((5 - 1) * 7.5);
-                    Ti.API.info((6 - 1) * 6);
-                    Ti.API.info((7 - 1) * 5);
-	    // fakeTabBgs ==  (array) the image that hides the real tab
-	    // fakeTabs == (array) the fake tab
-	    // tabbar == the tabgroup
-	    
-	    // we need element width/height and pos left/top
 	    
 		for(i=0; i<fakeTabBgs.length; i++) {
 			if(fakeTabBgs[i] !== false) {
@@ -171,9 +158,11 @@ var createCustomTabGroup = function(settings) {
                     var left = base_left + ((fakeTabBgs[i].index * width) + (margin * i));
                     
                 } else {
+                    base_left = 0;
+                    
                     margin = (tabbar.tabs.length - 1) * 2;
                     
-                    left = (width * fakeTabBgs[i].index) == 0 ? 1 : (width * fakeTabBgs[i].index);
+                    var left = (width * fakeTabBgs[i].index) == 0 ? 1 : (width * fakeTabBgs[i].index);
                 }
                 
                 fakeTabBgs[i].width = width;
@@ -185,30 +174,29 @@ var createCustomTabGroup = function(settings) {
 				 * We add the tab images seperate if they are larger then the normal tab space allows
 				 * however this CAN hit the limit of items that can be added to a tabgroup bar (5 items)
 				 */
-				/**
-				if(tabbar.tabs[ fakeTabBgs[i].index ].custom == true) {
+				if(tabbar.tabs[ fakeTabBgs[i].index ].custom === true) {
 
-					//fakeTabs[i].height = tabbar.tabs[ fakeTabs[i].index ].imageHeight > 49 ? tabbar.tabs[ fakeTabs[i].index ].imageHeight : 49;
-/**
+					fakeTabs[i].height = tabbar.tabs[ fakeTabs[i].index ].imageHeight > 49 ? tabbar.tabs[ fakeTabs[i].index ].imageHeight : 49;
+
 					if(tabbar.tabs[ fakeTabBgs[i].index ].imageWidth !== undefined && tabbar.tabs[ fakeTabBgs[i].index ].imageWidth > width) {
 
-						//image_offset = (fakeTabs[i].width - width) / 4;
-
-                        //fakeTabs[i].left = left - image_offset;
+                        offset = (tabbar.tabs[ fakeTabBgs[i].index ].imageWidth - width) / 2;
+                        
+                        fakeTabs[i].width = tabbar.tabs[ fakeTabBgs[i].index ].imageWidth;
+                        fakeTabs[i].left = left - offset;
 						
 					} else {
 					    
-						//image_offset = (fakeTabs[i].width - width) / 4;
+						image_offset = (fakeTabs[i].width - width) / 4;
 
-						//fakeTabs[i].left = left - image_offset;
+						fakeTabs[i].left = left - image_offset;
 
 					}
-					**/
 					
-					//tabbar.tabs[i].icon = null;
-					//tabbar.add(fakeTabs[i]);
+					tabbar.tabs[i].icon = null;
+					tabbar.add(fakeTabs[i]);
 
-				//}
+				}
 			}
 		}
 
@@ -225,11 +213,11 @@ var createCustomTabGroup = function(settings) {
 		
 		tabbar.addEventListener('focus', function(e) {
 			if(e.previousIndex != undefined && e.previousIndex >= 0 && fakeTabBgs[e.previousIndex] != undefined) {
-				//fakeTabBgs[e.previousIndex].backgroundImage = '/tabbar_module/images/tabbar.png';
-				fakeTabBgs[e.previousIndex].backgroundColor = 'blue';
+				fakeTabBgs[e.previousIndex].backgroundImage = '/tabbar_module/images/tabbar.png';
+				fakeTabBgs[e.previousIndex].backgroundColor = 'green';
 			}
 			if(e.index != undefined && e.index >= 0 && fakeTabBgs[e.index] != undefined) {
-				//fakeTabBgs[e.index].backgroundImage = '/tabbar_module/images/tabbar_h.png';
+				fakeTabBgs[e.index].backgroundImage = '/tabbar_module/images/tabbar_h.png';
 				fakeTabBgs[e.previousIndex].backgroundColor = 'green';
 			}
 		});
