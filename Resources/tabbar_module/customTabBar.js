@@ -119,6 +119,7 @@ var createCustomTabGroup = function(settings) {
 	    // tabbar == the tabgroup
 	    
 	    // we need element width/height and pos left/top
+	    var widths = 0;
 	    
 		for(i=0; i<fakeTabBgs.length; i++) {
 			if(fakeTabBgs[i] !== false) {
@@ -127,10 +128,12 @@ var createCustomTabGroup = function(settings) {
 				if(is_ipad) {
 					width = 76;
 				} else {
-				    margin = (tabbar.tabs.length - 1) * 2;
-					width = (320 / tabbar.tabs.length) - margin;
+				    var margin = (tabbar.tabs.length - 1) * 2;
+					width = (tabbar.width / tabbar.tabs.length) - margin;
 					margin = null;
 				}
+				
+				widths = widths + widths;
                 
                 /**
 				if(is_ipad) {
@@ -187,6 +190,7 @@ var createCustomTabGroup = function(settings) {
 			Ti.UI.currentTab = tabbar._activeTab;
 			Ti.UI.currentTabIndex = tabbar._activeTabIndex;
 		});
+		
 		tabbar.addEventListener('focus', function(e) {
 			if(e.previousIndex != undefined && e.previousIndex >= 0 && fakeTabBgs[e.previousIndex] != undefined) {
 				fakeTabBgs[e.previousIndex].backgroundImage = '/tabbar_module/images/tabbar.png';
