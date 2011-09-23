@@ -29,12 +29,16 @@ var createCustomTabGroup = function(settings) {
 				height: 49,
 				index: tabbar.tabs.length - 1,
 				bottom:0,
-				backgroundImage:'/tabbar_module/images/tabbar.png',
+				backgroundImage: object.backgroundImage || '/tabbar_module/images/tabbar.png',
+				defaultImage: object.backgroundImage || '/tabbar_module/images/tabbar.png',
+				selectedImage: object.selectedImage || '/tabbar_module/images/tabbar_h.png',
 				borderRadius:8
 			});
 
 			tabImage = Ti.UI.createImageView({
 				image: tabbar.tabs[ tabbar.tabs.length - 1 ].icon,
+				defaultImage: tabbar.tabs[ tabbar.tabs.length - 1 ].icon,
+				selectedImage: tabbar.tabs[ tabbar.tabs.length - 1 ].selectedIcon,
 				bottom:0,
 				index: tabbar.tabs.length - 1,
 				height:49,
@@ -57,7 +61,7 @@ var createCustomTabGroup = function(settings) {
 					touchEnabled: false
 				});
 
-				tabImage.bottom = 3;
+				tabImage.bottom = 0;
 
 				fakeTabBg.add(tabTitle);
 			}
@@ -86,7 +90,7 @@ var createCustomTabGroup = function(settings) {
 			}
 
 			/**
-			 * We add the tab images seperate if they are larger then the normal tab space allows
+			 * We add the tab images separate if they are larger then the normal tab space allows
 			 * however this CAN hit the limit of items that can be added to a tabgroup bar (5 items)
 			 */
             if(object.custom !== undefined || object.custom === true) {
@@ -212,10 +216,12 @@ var createCustomTabGroup = function(settings) {
 		
 		tabbar.addEventListener('focus', function(e) {
 			if(e.previousIndex != undefined && e.previousIndex >= 0 && fakeTabBgs[e.previousIndex] != undefined) {
-				fakeTabBgs[e.previousIndex].backgroundImage = '/tabbar_module/images/tabbar.png';
+				fakeTabs[e.previousIndex].image = fakeTabs[e.index].defaultImage;
+				fakeTabBgs[e.previousIndex].backgroundImage = fakeTabBgs[e.index].defaultImage;
 			}
 			if(e.index != undefined && e.index >= 0 && fakeTabBgs[e.index] != undefined) {
-				fakeTabBgs[e.index].backgroundImage = '/tabbar_module/images/tabbar_h.png';
+			    fakeTabs[e.previousIndex].selectedImage = fakeTabs[e.index].selectedImage;
+				fakeTabBgs[e.index].backgroundImage = fakeTabBgs[e.index].selectedImage;
 			}
 		});
 		tabbar.open();
