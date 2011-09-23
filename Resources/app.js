@@ -15,10 +15,12 @@ var win1 = Titanium.UI.createWindow({
     title:'Tab 1',
     backgroundColor:'#fff'
 });
+
+//win1.orientationModes = [ Titanium.UI.LANDSCAPE_LEFT ];
+ 
 var tab1 = Titanium.UI.createTab({  
     icon:'KS_nav_views.png',
     title:'Tab 1',
-    custom:true,
     window:win1
 });
 
@@ -69,10 +71,39 @@ var win2 = Titanium.UI.createWindow({
 	
 var tab2 = Titanium.UI.createTab({  
     icon:'new.png',
+    imageHeight:60,
+    imageWidth:190,
+    custom:true,
+    //modal: true,
+    window:win2
+});
+
+var tab4 = Titanium.UI.createTab({  
+    icon:'KS_nav_views.png',
+    //modal: true,
+    window:win2
+});
+
+var tab5 = Titanium.UI.createTab({  
+    icon:'KS_nav_views.png',
+    //modal: true,
+    window:win2
+});
+
+var tab6 = Titanium.UI.createTab({  
+    icon:'KS_nav_views.png',
+    tabHeight:60,
+    tabWidth:190,
+    //modal: true,
+    window:win2
+});
+
+var tab7 = Titanium.UI.createTab({  
+    icon:'KS_nav_views.png',
     tabHeight:60,
     tabWidth:190,
     custom:true,
-    modal: true,
+    //modal: true,
     window:win2
 });
 
@@ -93,6 +124,10 @@ win2.add(label2);
 tabGroup.addTab(tab1);
 tabGroup.addTab(tab2);
 tabGroup.addTab(tab3);  
+tabGroup.addTab(tab4); 
+tabGroup.addTab(tab5);  
+//tabGroup.addTab(tab6);  
+//tabGroup.addTab(tab7);  
 
 
 // open tab group
