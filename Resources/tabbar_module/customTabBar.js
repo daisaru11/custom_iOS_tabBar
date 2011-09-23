@@ -61,7 +61,7 @@ var createCustomTabGroup = function(settings) {
 			}
 
 			if(object.badge !== undefined ) {
-				throw "CustomTabGroup error: badges can not be set on custom tabs";
+				//throw "CustomTabGroup error: badges can not be set on custom tabs";
 			}
 
 			if(object.modal === true && tabbar.tabs.length == 1) {
@@ -99,7 +99,7 @@ var createCustomTabGroup = function(settings) {
 				});
 				fakeTab.add(tabImage);
 				if(object.badge !== undefined) {
-					fakeTab.add(tabBadge);
+					//fakeTab.add(tabBadge);
 				}
 			}
 
@@ -113,13 +113,23 @@ var createCustomTabGroup = function(settings) {
 	}
 
 	function open() {
+	    
+	    // fakeTabBgs ==  (array) the image that hides the real tab
+	    // fakeTabs == (array) the fake tab
+	    // tabbar == the tabgroup
+	    
+	    // we need element width/height and pos left/top
+	    
 		for(i=0; i<fakeTabBgs.length; i++) {
 			if(fakeTabBgs[i] !== false) {
 				// calculate tab bg width and position
+				
 				if(is_ipad) {
-					width = 70;
+					width = 76;
 				} else {
-					width = (320 / tabbar.tabs.length) - 2;
+				    margin = (tabbar.tabs.length - 1) * 2;
+					width = (320 / tabbar.tabs.length) - margin;
+					margin = null;
 				}
 
 				if(is_ipad) {
