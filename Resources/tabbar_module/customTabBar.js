@@ -131,7 +131,8 @@ var createCustomTabGroup = function(settings) {
 					width = (320 / tabbar.tabs.length) - margin;
 					margin = null;
 				}
-
+                
+                /**
 				if(is_ipad) {
 					// this is the distance from the left of tab 1
 					base_left = ((tabbar.width / 2) - ((width * tabbar.tabs.length) / 2) - 40);
@@ -147,11 +148,12 @@ var createCustomTabGroup = function(settings) {
 
 				// we always add the bg
 				tabbar.add(fakeTabBgs[i]);
-
+                **/
 				/**
 				 * We add the tab images seperate if they are larger then the normal tab space allows
 				 * however this CAN hit the limit of items that can be added to a tabgroup bar (5 items)
 				 */
+				/**
 				if(tabbar.tabs[ fakeTabBgs[i].index ].tabHeight !== undefined) {
 
 					fakeTabs[i].height = tabbar.tabs[ fakeTabs[i].index ].tabHeight !== undefined ? tabbar.tabs[ fakeTabs[i].index ].tabHeight : 47;
@@ -171,6 +173,7 @@ var createCustomTabGroup = function(settings) {
 					tabbar.add(fakeTabs[i]);
 
 				}
+				**/
 			}
 		}
 
