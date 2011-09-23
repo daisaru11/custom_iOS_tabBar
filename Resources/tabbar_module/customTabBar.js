@@ -12,9 +12,10 @@ var createCustomTabGroup = function(settings) {
 
 	var tallest_tab = 50;
 
-	var is_ipad = Titanium.UI.iPad === undefined ? false : true;
+	var is_ipad = Titanium.UI.iPad === null ? false : true;
 
 	function addTab(object) {
+	    
 		tabbar.addTab(object);
 
 		if(object.tabBarHidden === true) {
@@ -123,11 +124,13 @@ var createCustomTabGroup = function(settings) {
 				if(is_ipad) {
 					width = 80;
 				} else {
+				    margin = (tabbar.tabs.length - 1) * 2;
+				    
 					width = (tabbar.width / tabbar.tabs.length) - margin;
 				}
 				                
                 if(is_ipad) {
-                    
+
                     switch(tabbar.tabs.length) {
                         case 2: 
                             margin = 26;
@@ -159,12 +162,10 @@ var createCustomTabGroup = function(settings) {
                     
                 } else {
                     base_left = 0;
-                    
-                    margin = (tabbar.tabs.length - 1) * 2;
-                    
-                    var left = (width * fakeTabBgs[i].index) == 0 ? 1 : (width * fakeTabBgs[i].index);
+                                        
+                    var left = fakeTabBgs[i].index === 0 ? 4 : (width * fakeTabBgs[i].index) + (4 + (margin * (fakeTabBgs[i].index)));
                 }
-                
+
                 fakeTabBgs[i].width = width;
                 fakeTabBgs[i].left = left;
                 
@@ -212,11 +213,9 @@ var createCustomTabGroup = function(settings) {
 		tabbar.addEventListener('focus', function(e) {
 			if(e.previousIndex != undefined && e.previousIndex >= 0 && fakeTabBgs[e.previousIndex] != undefined) {
 				fakeTabBgs[e.previousIndex].backgroundImage = '/tabbar_module/images/tabbar.png';
-				fakeTabBgs[e.previousIndex].backgroundColor = 'green';
 			}
 			if(e.index != undefined && e.index >= 0 && fakeTabBgs[e.index] != undefined) {
 				fakeTabBgs[e.index].backgroundImage = '/tabbar_module/images/tabbar_h.png';
-				fakeTabBgs[e.previousIndex].backgroundColor = 'green';
 			}
 		});
 		tabbar.open();
