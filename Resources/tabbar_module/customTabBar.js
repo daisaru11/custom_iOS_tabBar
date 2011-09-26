@@ -9,17 +9,22 @@ var createCustomTabGroup = function(settings) {
 	var fakeTabBgs = [];
 
 	var fakeTabs = [];
+    
+    var currentTab = {};
+    
+    var currentTabIndex = 0;
 
 	var tallest_tab = 50;
 
-	var is_ipad = Titanium.UI.iPad === null ? false : true;
+    //Only 'cross the bridge' once
+	var is_ipad = Titanium.UI.iPad === null ? false : true; 
 
 	function addTab(object) {
 	    
 		tabbar.addTab(object);
 
 		if(object.tabBarHidden === true) {
-			Ti.API.info('tabBarHidden is not supported by CustomTabBar and will be ignored');
+			Ti.API.info('tabBarHidden is not currently supported by CustomTabBar and will be ignored');
 
 			delete object.tabBarHidden;
 		}
@@ -29,8 +34,8 @@ var createCustomTabGroup = function(settings) {
 				height: 49,
 				index: tabbar.tabs.length - 1,
 				bottom:0,
-				backgroundImage: object.backgroundImage || '/tabbar_module/images/tabbar.png',
-				defaultImage: object.backgroundImage || '/tabbar_module/images/tabbar.png',
+				backgroundImage: '/tabbar_module/images/tabbar.png',
+				defaultImage: '/tabbar_module/images/tabbar.png',
 				selectedImage: object.selectedImage || '/tabbar_module/images/tabbar_h.png',
 				borderRadius:8
 			});
@@ -66,8 +71,8 @@ var createCustomTabGroup = function(settings) {
 				fakeTabBg.add(tabTitle);
 			}
 
-			if(object.badge !== undefined ) {
-				//throw "CustomTabGroup error: badges can not be set on custom tabs";
+			if(object.badge !== null ) {
+				throw "CustomTabGroup error: badges can not be set on custom tabs";
 			}
 
 			if(object.modal === true && tabbar.tabs.length == 1) {
@@ -117,9 +122,8 @@ var createCustomTabGroup = function(settings) {
 
 		return;
 	}
-
-	function open() {
-	    
+    
+    function align() {
 		for(i=0; i<fakeTabBgs.length; i++) {
 			if(fakeTabBgs[i] !== false) {
 				// calculate tab bg width and position
@@ -131,10 +135,11 @@ var createCustomTabGroup = function(settings) {
 				    margin = (tabbar.tabs.length - 1) * 2;
 				    
 					width = (tabbar.width / tabbar.tabs.length) - margin;
-				}
+                }
 				                
                 if(is_ipad) {
-
+                    
+                    // The iPad does not use any kind of math to dictate the spacing… :(
                     switch(tabbar.tabs.length) {
                         case 2: 
                             margin = 26;
@@ -158,8 +163,8 @@ var createCustomTabGroup = function(settings) {
                     // this is the distance from the left of tab 1
                     var b = (fakeTabBgs.length * width) + ((fakeTabBgs.length - 1) * margin);
                     
-                    base_left = (tabbar.width / 2) - (b/2);   
-                    
+                    base_left = (tabbar.width / 2) - (b/2);
+                     
                     b = null;                 
 
                     var left = base_left + ((fakeTabBgs[i].index * width) + (margin * i));
@@ -168,12 +173,11 @@ var createCustomTabGroup = function(settings) {
                     base_left = 0;
                                         
                     var left = fakeTabBgs[i].index === 0 ? 4 : (width * fakeTabBgs[i].index) + (4 + (margin * (fakeTabBgs[i].index)));
+                    Ti.API.info(left);
                 }
 
                 fakeTabBgs[i].width = width;
                 fakeTabBgs[i].left = left;
-                
-                tabbar.add(fakeTabBgs[i]);
                 
 				/**
 				 * We add the tab images seperate if they are larger then the normal tab space allows
@@ -188,7 +192,29 @@ var createCustomTabGroup = function(settings) {
                         
                         fakeTabs[i].width = tabbar.tabs[ fakeTabBgs[i].index ].imageWidth;
                         fakeTabs[i].left = left - offset;
-                        
+						
+					}
+
+				}
+			}
+		}
+    }
+
+	function open() {
+        
+        //get the numbers and apply them to the objects
+        align();
+	    
+	    // loop through to add the objects
+		for(i=0; i<fakeTabBgs.length; i++) {
+			if(fakeTabBgs[i] !== false) {
+            
+                tabbar.add(fakeTabBgs[i]);
+
+				if(tabbar.tabs[ fakeTabBgs[i].index ].custom === true) {
+
+					if(tabbar.tabs[ fakeTabBgs[i].index ].imageWidth !== undefined && tabbar.tabs[ fakeTabBgs[i].index ].imageWidth >= width) {
+                                              
                         tabbar.add(fakeTabs[i]);
                         
                         tabbar.tabs[i].icon = null;
@@ -209,18 +235,23 @@ var createCustomTabGroup = function(settings) {
 			if ( tabbar._activeTabIndex == -1)
 				return;
 
-			// create property in Ti namespace
-			Ti.UI.currentTab = tabbar._activeTab;
-			Ti.UI.currentTabIndex = tabbar._activeTabIndex;
+			// create set active tab
+			currentTab = tabbar._activeTab;
+			currentTabIndex = tabbar._activeTabIndex;
 		});
+        
+        Ti.Gesture.addEventListener('orientationchange', function(e) {
+            // wait till the rotation is 1/2 way done
+            setTimeout(function() {
+                align();
+            },200);
+        });
 		
 		tabbar.addEventListener('focus', function(e) {
-			if(e.previousIndex != undefined && e.previousIndex >= 0 && fakeTabBgs[e.previousIndex] != undefined) {
-				fakeTabs[e.previousIndex].image = fakeTabs[e.index].defaultImage;
+			if(e.previousIndex !== undefined && e.previousIndex >= 0 && fakeTabBgs[e.previousIndex] !== undefined) {
 				fakeTabBgs[e.previousIndex].backgroundImage = fakeTabBgs[e.index].defaultImage;
 			}
-			if(e.index != undefined && e.index >= 0 && fakeTabBgs[e.index] != undefined) {
-			    fakeTabs[e.previousIndex].selectedImage = fakeTabs[e.index].selectedImage;
+			if(e.index !== undefined && e.index >= 0 && fakeTabBgs[e.index] !== undefined) {
 				fakeTabBgs[e.index].backgroundImage = fakeTabBgs[e.index].selectedImage;
 			}
 		});
@@ -279,9 +310,7 @@ var createCustomTabGroup = function(settings) {
 
 	return {
 
-		/**
-		 * We create our own versions of these
-		 */
+		//We create our own versions of these
 		open: function() {
 			open()
 		},
@@ -300,9 +329,8 @@ var createCustomTabGroup = function(settings) {
 		showTabBar: function() {
 			showTabBar();
 		},
-		/**
-		 * Pass directly to the native tabgroup
-		 */
+        
+		//Pass directly to the native tabgroup
 		remove: function(object) {
 			tabbar.remove(object)
 		},
@@ -333,9 +361,12 @@ var createCustomTabGroup = function(settings) {
 		toImage : function() {
 			tabbar.toImage()
 		},
-		/**
-		 * Access to the tabs from the outside
-		 */
-		tabs: tabbar.tabs
+        
+		//Access to the tabs from the outside
+		tabs: tabbar.tabs,
+        
+        //Some nice things to have
+        currentTab : currentTab,
+        currentTabIndex : currentTabIndex
 	};
 };
