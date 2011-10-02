@@ -10,14 +10,14 @@ var createCustomTabGroup = function(settings) {
 
 	var fakeTabs = [];
     
-    var currentTab = {};
+        var currentTab = {};
     
-    var currentTabIndex = 0;
+        var currentTabIndex = 0;
 
 	var tallest_tab = 50;
 
-    //Only 'cross the bridge' once
-	var is_ipad = Titanium.UI.iPad === null ? false : true; 
+        //Only 'cross the bridge' once
+        var is_ipad = Ti.Platform.model !== 'iPad' && Ti.Platform.model !== 'iPad Simulator' ? false : true; 
 
 	function addTab(object) {
 	    
