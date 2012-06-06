@@ -47,7 +47,7 @@ var createCustomTabGroup = function(settings) {
 				bottom:0,
 				index: tabbar.tabs.length - 1,
 				height:49,
-				width: tabbar.tabs[ tabbar.tabs.length - 1 ].imageWidth || 'auto',
+				width: tabbar.tabs[ tabbar.tabs.length - 1 ].imageWidth || Ti.UI.SIZE,
 				touchEnabled: false,
 				preventDefaultImage: true
 			});
@@ -56,8 +56,8 @@ var createCustomTabGroup = function(settings) {
 				tabTitle = Ti.UI.createLabel({
 					text: object.title,
 					bottom:0,
-					height:'auto',
-					width:'auto',
+					height:Ti.UI.SIZE,
+					width:Ti.UI.SIZE,
 					font: {
 						fontSize:10,
 						fontWeight:'bold'
@@ -134,7 +134,7 @@ var createCustomTabGroup = function(settings) {
 				} else {
 				    margin = (tabbar.tabs.length - 1) * 2;
 				    
-					width = (tabbar.width / tabbar.tabs.length) - margin;
+					width = (tabbar.size.width / tabbar.tabs.length) - margin;
                 }
 				                
                 if(is_ipad) {
@@ -163,7 +163,7 @@ var createCustomTabGroup = function(settings) {
                     // this is the distance from the left of tab 1
                     var b = (fakeTabBgs.length * width) + ((fakeTabBgs.length - 1) * margin);
                     
-                    base_left = (tabbar.width / 2) - (b/2);
+                    base_left = (tabbar.size.width / 2) - (b/2);
                      
                     b = null;                 
 
@@ -202,6 +202,8 @@ var createCustomTabGroup = function(settings) {
 
 	function open() {
         
+		tabbar.open(); // open the tabbar before aligning
+
         //get the numbers and apply them to the objects
         align();
 	    
@@ -255,7 +257,6 @@ var createCustomTabGroup = function(settings) {
 				fakeTabBgs[e.index].backgroundImage = fakeTabBgs[e.index].selectedImage;
 			}
 		});
-		tabbar.open();
 		return;
 	}
 

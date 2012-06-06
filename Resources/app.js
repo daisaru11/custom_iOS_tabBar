@@ -27,7 +27,7 @@ var label1 = Titanium.UI.createLabel({
 	text:'I am Window 1',
 	font:{fontSize:20,fontFamily:'Helvetica Neue'},
 	textAlign:'center',
-	width:'auto'
+	width:Ti.UI.SIZE
 });
 
 win1.add(label1);
@@ -60,7 +60,7 @@ var label2 = Titanium.UI.createLabel({
     text:'I am Window 2',
     font:{fontSize:20,fontFamily:'Helvetica Neue', fontWeight: 'bold'},
     textAlign:'center',
-    width:'auto'
+    width:Ti.UI.SIZE
 });
 
 win2.add(label2);
@@ -85,7 +85,7 @@ var label3 = Titanium.UI.createLabel({
 	text:'I am Window 3',
 	font:{fontSize:20,fontFamily:'Helvetica Neue'},
 	textAlign:'center',
-	width:'auto'
+	width:Ti.UI.SIZE
 });
 
 win3.add(label3);
